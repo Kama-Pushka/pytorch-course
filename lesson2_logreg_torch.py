@@ -1,5 +1,5 @@
 import torch
-from utils import CustomDataset, log_epoch, accuracy, make_classification_data
+from utils import CustomDataset, log_epoch, accuracy, make_binary_classification_data
 
 
 class LogisticRegressionTorch(torch.nn.Module):
@@ -14,7 +14,7 @@ class LogisticRegressionTorch(torch.nn.Module):
 def logistic_regression_torch_test():
     EPOCHS = 100
 
-    X, y = make_classification_data()
+    X, y = make_binary_classification_data()
     dataset = CustomDataset(X, y)
     dataloader = torch.utils.data.DataLoader(
         dataset,
