@@ -1,0 +1,78 @@
+### Training on MNIST dataset
+
+Training model with configuration: 1 layer
+Epoch 1/5: Train loss: 1.6268, Train acc: 0.6342, Test loss: 1.0785, Test acc: 0.7788,
+Epoch 2/5: Train loss: 0.8363, Train acc: 0.8125, Test loss: 0.6421, Test acc: 0.8472,
+Epoch 4/5: Train loss: 0.4675, Train acc: 0.8767, Test loss: 0.4214, Test acc: 0.8873,
+Epoch 5/5: Train loss: 0.4108, Train acc: 0.8892, Test loss: 0.3801, Test acc: 0.8948,
+Time taken to train: 19.29 seconds
+
+Training model with configuration: 2 layers
+Number of parameters: 407160
+Epoch 4/5: Train loss: 0.2090, Train acc: 0.9414, Test loss: 0.1879, Test acc: 0.9452,
+Epoch 5/5: Train loss: 0.1749, Train acc: 0.9504, Test loss: 0.1645, Test acc: 0.9529,
+Time taken to train: 21.24 seconds
+
+Training model with configuration: 3 layers
+Epoch 2/5: Train loss: 0.2813, Train acc: 0.9190, Test loss: 0.2238, Test acc: 0.9342,
+Epoch 3/5: Train loss: 0.1910, Train acc: 0.9447, Test loss: 0.1732, Test acc: 0.9499,
+Epoch 4/5: Train loss: 0.1438, Train acc: 0.9582, Test loss: 0.1376, Test acc: 0.9575,
+Epoch 5/5: Train loss: 0.1163, Train acc: 0.9661, Test loss: 0.1158, Test acc: 0.9658,
+Time taken to train: 22.93 seconds
+
+Training model with configuration: 5 layers
+Number of parameters: 575160
+Epoch 1/5: Train loss: 1.2456, Train acc: 0.5877, Test loss: 0.5787, Test acc: 0.8404,
+Epoch 2/5: Train loss: 0.4423, Train acc: 0.8766, Test loss: 0.3034, Test acc: 0.9156,
+Epoch 5/5: Train loss: 0.1522, Train acc: 0.9571, Test loss: 0.1528, Test acc: 0.9578,
+Time taken to train: 22.50 seconds
+
+Training model with configuration: 7 layers
+Epoch 2/5: Train loss: 0.7501, Train acc: 0.7876, Test loss: 0.4795, Test acc: 0.8772,
+Epoch 5/5: Train loss: 0.2154, Train acc: 0.9446, Test loss: 0.2106, Test acc: 0.9466,
+Time taken to train: 22.83 seconds
+
+Training model with configuration: Dropout + BatchNorm layers
+Epoch 2/5: Train loss: 0.1852, Train acc: 0.9456, Test loss: 0.1386, Test acc: 0.9597,
+Epoch 3/5: Train loss: 0.1249, Train acc: 0.9627, Test loss: 0.1106, Test acc: 0.9682,
+Epoch 4/5: Train loss: 0.0934, Train acc: 0.9720, Test loss: 0.1054, Test acc: 0.9686,
+Epoch 5/5: Train loss: 0.0718, Train acc: 0.9778, Test loss: 0.0889, Test acc: 0.9740,
+Time taken to train: 31.57 seconds
+
+### Training on CIFAR dataset
+
+Number of parameters: 30840
+Epoch 2/5: Train loss: 1.9630, Train acc: 0.3006, Test loss: 1.9227, Test acc: 0.3220,
+Epoch 5/5: Train loss: 1.8337, Train acc: 0.3567, Test loss: 1.8212, Test acc: 0.3642,
+Time taken to train: 22.45 seconds
+
+Training model with configuration: 2 layers
+Epoch 2/5: Train loss: 1.8459, Train acc: 0.3487, Test loss: 1.8035, Test acc: 0.3534,
+Epoch 5/5: Train loss: 1.6587, Train acc: 0.4112, Test loss: 1.6363, Test acc: 0.4239,
+Time taken to train: 27.23 seconds
+
+Training model with configuration: 3 layers
+Number of parameters: 1707384
+Epoch 2/5: Train loss: 1.8410, Train acc: 0.3419, Test loss: 1.7718, Test acc: 0.3692,
+Epoch 3/5: Train loss: 1.7540, Train acc: 0.3715, Test loss: 1.6960, Test acc: 0.3912,
+Epoch 4/5: Train loss: 1.6823, Train acc: 0.3975, Test loss: 1.6638, Test acc: 0.4060,
+Epoch 5/5: Train loss: 1.6314, Train acc: 0.4211, Test loss: 1.6156, Test acc: 0.4270,
+Time taken to train: 27.43 seconds
+
+Training model with configuration: 5 layers
+Epoch 2/5: Train loss: 1.9593, Train acc: 0.2671, Test loss: 1.9088, Test acc: 0.2805,
+Epoch 5/5: Train loss: 1.7352, Train acc: 0.3693, Test loss: 1.6814, Test acc: 0.3923,
+Time taken to train: 27.58 seconds
+
+Training model with configuration: 7 layers
+Number of parameters: 1748744
+Epoch 3/5: Train loss: 1.9958, Train acc: 0.2470, Test loss: 1.9467, Test acc: 0.2650,
+Epoch 5/5: Train loss: 1.8641, Train acc: 0.3041, Test loss: 1.8422, Test acc: 0.3226,
+Time taken to train: 27.70 seconds
+
+Training model with configuration: Dropout + BatchNorm layers
+Number of parameters: 1747640
+Epoch 2/5: Train loss: 1.6153, Train acc: 0.4203, Test loss: 1.6910, Test acc: 0.4000,
+Epoch 3/5: Train loss: 1.5130, Train acc: 0.4591, Test loss: 1.6250, Test acc: 0.4229,
+Epoch 5/5: Train loss: 1.3734, Train acc: 0.5104, Test loss: 1.5261, Test acc: 0.4592,
+Time taken to train: 27.61 seconds

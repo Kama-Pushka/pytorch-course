@@ -1,0 +1,92 @@
+### 2.1
+
+Training model with configuration: Узкие слои
+
+Number of parameters: 53128
+Epoch 1/5: Train loss: 0.5953, Train acc: 0.8162, Test loss: 0.2724, Test acc: 0.9191,
+Epoch 2/5: Train loss: 0.2206, Train acc: 0.9366, Test loss: 0.1812, Test acc: 0.9460,
+Epoch 3/5: Train loss: 0.1588, Train acc: 0.9534, Test loss: 0.1405, Test acc: 0.9584,
+Epoch 4/5: Train loss: 0.1245, Train acc: 0.9631, Test loss: 0.1345, Test acc: 0.9623,
+Epoch 5/5: Train loss: 0.1034, Train acc: 0.9691, Test loss: 0.1229, Test acc: 0.9627,
+Time taken to train: 36.33 seconds
+
+Training model with configuration: Средние слои
+
+Number of parameters: 242872
+Epoch 1/5: Train loss: 0.3892, Train acc: 0.8795, Test loss: 0.1549, Test acc: 0.9539,
+Epoch 2/5: Train loss: 0.1248, Train acc: 0.9628, Test loss: 0.1180, Test acc: 0.9645,
+Epoch 3/5: Train loss: 0.0843, Train acc: 0.9736, Test loss: 0.1003, Test acc: 0.9697,
+Epoch 4/5: Train loss: 0.0616, Train acc: 0.9807, Test loss: 0.0875, Test acc: 0.9735,
+Epoch 5/5: Train loss: 0.0468, Train acc: 0.9855, Test loss: 0.0901, Test acc: 0.9727,
+Time taken to train: 39.11 seconds
+
+Training model with configuration: Широкие слои
+
+Number of parameters: 1462648
+Epoch 1/5: Train loss: 0.2472, Train acc: 0.9237, Test loss: 0.1050, Test acc: 0.9672,
+Epoch 2/5: Train loss: 0.0910, Train acc: 0.9726, Test loss: 0.0867, Test acc: 0.9720,
+Epoch 3/5: Train loss: 0.0638, Train acc: 0.9803, Test loss: 0.0878, Test acc: 0.9750,
+Epoch 4/5: Train loss: 0.0474, Train acc: 0.9856, Test loss: 0.0878, Test acc: 0.9768,
+Epoch 5/5: Train loss: 0.0381, Train acc: 0.9882, Test loss: 0.0760, Test acc: 0.9802,
+Time taken to train: 40.16 seconds
+
+Training model with configuration: Очень широкие слои
+
+Number of parameters: 4235896
+Epoch 1/5: Train loss: 0.2377, Train acc: 0.9294, Test loss: 0.1116, Test acc: 0.9677,
+Epoch 2/5: Train loss: 0.0908, Train acc: 0.9729, Test loss: 0.0948, Test acc: 0.9727,
+Epoch 3/5: Train loss: 0.0628, Train acc: 0.9810, Test loss: 0.0836, Test acc: 0.9757,
+Epoch 4/5: Train loss: 0.0502, Train acc: 0.9850, Test loss: 0.0858, Test acc: 0.9761,
+Epoch 5/5: Train loss: 0.0399, Train acc: 0.9879, Test loss: 0.0718, Test acc: 0.9796,
+Time taken to train: 47.57 seconds
+
+### 2.2
+
+Epoch 1/5: Train loss: 1.3692, Train acc: 0.5828, Test loss: 0.5897, Test acc: 0.8343,
+Epoch 2/5: Train loss: 0.4445, Train acc: 0.8737, Test loss: 0.3235, Test acc: 0.9044,
+Epoch 3/5: Train loss: 0.2940, Train acc: 0.9153, Test loss: 0.2574, Test acc: 0.9224,
+Epoch 4/5: Train loss: 0.2321, Train acc: 0.9327, Test loss: 0.2164, Test acc: 0.9365,
+Epoch 5/5: Train loss: 0.1958, Train acc: 0.9424, Test loss: 0.1880, Test acc: 0.9441,
+Evaluated architecture: (64, 128, 256). Accuracy: 0.9441, Time: 20.39s.
+
+Epoch 1/5: Train loss: 1.2147, Train acc: 0.6060, Test loss: 0.5139, Test acc: 0.8500,
+Epoch 2/5: Train loss: 0.4096, Train acc: 0.8808, Test loss: 0.3137, Test acc: 0.9081,
+Epoch 3/5: Train loss: 0.2815, Train acc: 0.9206, Test loss: 0.2383, Test acc: 0.9280,
+Epoch 4/5: Train loss: 0.2143, Train acc: 0.9380, Test loss: 0.1959, Test acc: 0.9438,
+Epoch 5/5: Train loss: 0.1732, Train acc: 0.9499, Test loss: 0.1687, Test acc: 0.9502,
+Evaluated architecture: (256, 128, 64). Accuracy: 0.9502, Time: 20.43s.
+
+Epoch 1/5: Train loss: 1.2732, Train acc: 0.5786, Test loss: 0.5760, Test acc: 0.8202,
+Epoch 2/5: Train loss: 0.4723, Train acc: 0.8568, Test loss: 0.3744, Test acc: 0.8919,
+Epoch 3/5: Train loss: 0.3272, Train acc: 0.9056, Test loss: 0.2824, Test acc: 0.9205,
+Epoch 4/5: Train loss: 0.2457, Train acc: 0.9293, Test loss: 0.2153, Test acc: 0.9384,
+Epoch 5/5: Train loss: 0.1896, Train acc: 0.9457, Test loss: 0.1924, Test acc: 0.9449,
+Evaluated architecture: (128, 128, 128). Accuracy: 0.9449, Time: 20.37s.
+
+Epoch 1/5: Train loss: 0.9923, Train acc: 0.6909, Test loss: 0.4151, Test acc: 0.8831,
+Epoch 2/5: Train loss: 0.3462, Train acc: 0.9034, Test loss: 0.2736, Test acc: 0.9234,
+Epoch 3/5: Train loss: 0.2388, Train acc: 0.9333, Test loss: 0.2078, Test acc: 0.9420,
+Epoch 4/5: Train loss: 0.1741, Train acc: 0.9510, Test loss: 0.1655, Test acc: 0.9526,
+Epoch 5/5: Train loss: 0.1324, Train acc: 0.9624, Test loss: 0.1368, Test acc: 0.9597,
+Evaluated architecture: (256, 256, 256). Accuracy: 0.9597, Time: 20.64s.
+
+Epoch 1/5: Train loss: 0.7850, Train acc: 0.7621, Test loss: 0.3148, Test acc: 0.9095,
+Epoch 2/5: Train loss: 0.2459, Train acc: 0.9282, Test loss: 0.1882, Test acc: 0.9451,
+Epoch 3/5: Train loss: 0.1561, Train acc: 0.9547, Test loss: 0.1422, Test acc: 0.9577,
+Epoch 4/5: Train loss: 0.1167, Train acc: 0.9656, Test loss: 0.1183, Test acc: 0.9642,
+Epoch 5/5: Train loss: 0.0883, Train acc: 0.9739, Test loss: 0.1044, Test acc: 0.9674,
+Evaluated architecture: (512, 512, 512). Accuracy: 0.9674, Time: 22.28s.
+
+Epoch 1/5: Train loss: 0.7618, Train acc: 0.7427, Test loss: 0.2639, Test acc: 0.9239,
+Epoch 2/5: Train loss: 0.1793, Train acc: 0.9472, Test loss: 0.1443, Test acc: 0.9583,
+Epoch 3/5: Train loss: 0.1065, Train acc: 0.9677, Test loss: 0.1073, Test acc: 0.9682,
+Epoch 4/5: Train loss: 0.0699, Train acc: 0.9793, Test loss: 0.0947, Test acc: 0.9721,
+Epoch 5/5: Train loss: 0.0509, Train acc: 0.9846, Test loss: 0.0830, Test acc: 0.9755,
+Evaluated architecture: (1024, 1024, 1024). Accuracy: 0.9755, Time: 26.47s.
+
+Best Architecture:
+width_scheme     (1024, 1024, 1024)
+accuracy                     0.9755
+param_count                 2913400
+training_time             26.474872
+Name: 5, dtype: object
