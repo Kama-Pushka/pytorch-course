@@ -1,8 +1,8 @@
 import torch
 from tqdm import tqdm
 
-from utils.lesson3_datasets import get_mnist_dataloaders
-from utils.lesson3_models import FCN
+from lessons.lesson3_datasets import get_mnist_dataloaders
+from lessons.lesson3_models import FCN
 
 
 def save_model(path: str, model: torch.nn.Module, optimizer: torch.optim.Optimizer, epoch: int,
