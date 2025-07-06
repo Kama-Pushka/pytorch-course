@@ -28,7 +28,10 @@ class CIFARDataset(Dataset):
             train=train,
             download=True
         )
-        self.transform = tf.ToTensor() # преобразование Pillow-картинки в тензор
+        self.transform = tf.Compose([
+            tf.ToTensor(),
+            tf.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
+        ]) # преобразование Pillow-картинки в тензор
 
     def __getitem__(self, index):
         return self.transform(self.dataset[index][0]), self.dataset[index][1]
