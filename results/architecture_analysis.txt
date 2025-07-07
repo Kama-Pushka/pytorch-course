@@ -1,0 +1,72 @@
+### 2.1
+
+Training 3x3 Kernel...
+Epoch 1/10: Train loss: 1.4521, Train acc: 0.4718, Test loss: 1.0973, Test acc: 0.6050,
+Epoch 2/10: Train loss: 1.0108, Train acc: 0.6417, Test loss: 0.8751, Test acc: 0.6938,
+Epoch 3/10: Train loss: 0.8203, Train acc: 0.7131, Test loss: 0.7838, Test acc: 0.7286,
+Epoch 4/10: Train loss: 0.6958, Train acc: 0.7546, Test loss: 0.7543, Test acc: 0.7419,
+Epoch 5/10: Train loss: 0.5981, Train acc: 0.7903, Test loss: 0.7397, Test acc: 0.7521,
+Epoch 6/10: Train loss: 0.5247, Train acc: 0.8135, Test loss: 0.7481, Test acc: 0.7518,
+Epoch 7/10: Train loss: 0.4555, Train acc: 0.8381, Test loss: 0.7236, Test acc: 0.7626,
+Epoch 8/10: Train loss: 0.3957, Train acc: 0.8589, Test loss: 0.7378, Test acc: 0.7672,
+Epoch 9/10: Train loss: 0.3391, Train acc: 0.8784, Test loss: 0.7807, Test acc: 0.7664,
+Epoch 10/10: Train loss: 0.3012, Train acc: 0.8903, Test loss: 0.8212, Test acc: 0.7629,
+3x3 Kernel trained in 111.44 seconds
+Final Test Accuracy: [0.605, 0.6938, 0.7286, 0.7419, 0.7521, 0.7518, 0.7626, 0.7672, 0.7664, 0.7629]%
+
+Training 5x5 Kernel...
+Epoch 1/10: Train loss: 1.4422, Train acc: 0.4741, Test loss: 1.1891, Test acc: 0.5755,
+Epoch 2/10: Train loss: 1.0161, Train acc: 0.6419, Test loss: 0.9033, Test acc: 0.6785,
+Epoch 3/10: Train loss: 0.8106, Train acc: 0.7157, Test loss: 0.8844, Test acc: 0.7016,
+Epoch 4/10: Train loss: 0.6778, Train acc: 0.7628, Test loss: 0.7754, Test acc: 0.7351,
+Epoch 5/10: Train loss: 0.5727, Train acc: 0.7984, Test loss: 0.7818, Test acc: 0.7425,
+Epoch 6/10: Train loss: 0.4842, Train acc: 0.8280, Test loss: 0.7694, Test acc: 0.7488,
+Epoch 7/10: Train loss: 0.4091, Train acc: 0.8533, Test loss: 0.8124, Test acc: 0.7465,
+Epoch 8/10: Train loss: 0.3395, Train acc: 0.8802, Test loss: 0.8710, Test acc: 0.7385,
+Epoch 9/10: Train loss: 0.2923, Train acc: 0.8951, Test loss: 0.9307, Test acc: 0.7447,
+Epoch 10/10: Train loss: 0.2564, Train acc: 0.9078, Test loss: 1.0206, Test acc: 0.7456,
+5x5 Kernel trained in 115.83 seconds
+Final Test Accuracy: [0.5755, 0.6785, 0.7016, 0.7351, 0.7425, 0.7488, 0.7465, 0.7385, 0.7447, 0.7456]%
+
+Training 7x7 Kernel...
+Epoch 1/10: Train loss: 1.6251, Train acc: 0.3985, Test loss: 1.3368, Test acc: 0.5214,
+Epoch 2/10: Train loss: 1.2561, Train acc: 0.5501, Test loss: 1.1476, Test acc: 0.5887,
+Epoch 3/10: Train loss: 1.0882, Train acc: 0.6130, Test loss: 1.0936, Test acc: 0.6085,
+Epoch 4/10: Train loss: 0.9703, Train acc: 0.6551, Test loss: 1.0608, Test acc: 0.6298,
+Epoch 5/10: Train loss: 0.8797, Train acc: 0.6860, Test loss: 0.9700, Test acc: 0.6629,
+Epoch 6/10: Train loss: 0.7965, Train acc: 0.7166, Test loss: 0.9891, Test acc: 0.6637,
+Epoch 7/10: Train loss: 0.7290, Train acc: 0.7414, Test loss: 0.9625, Test acc: 0.6756,
+Epoch 8/10: Train loss: 0.6549, Train acc: 0.7630, Test loss: 1.0198, Test acc: 0.6692,
+Epoch 9/10: Train loss: 0.5872, Train acc: 0.7887, Test loss: 1.0320, Test acc: 0.6670,
+Epoch 10/10: Train loss: 0.5320, Train acc: 0.8072, Test loss: 1.0863, Test acc: 0.6651,
+7x7 Kernel trained in 116.38 seconds
+Final Test Accuracy: [0.5214, 0.5887, 0.6085, 0.6298, 0.6629, 0.6637, 0.6756, 0.6692, 0.667, 0.6651]%
+
+Training Mixed Kernel (1x1 + 3x3)...
+Epoch 1/10: Train loss: 1.6837, Train acc: 0.3763, Test loss: 1.3817, Test acc: 0.4997,
+Epoch 2/10: Train loss: 1.3098, Train acc: 0.5242, Test loss: 1.1854, Test acc: 0.5760,
+Epoch 3/10: Train loss: 1.1308, Train acc: 0.5946, Test loss: 1.0457, Test acc: 0.6215,
+Epoch 4/10: Train loss: 0.9929, Train acc: 0.6480, Test loss: 1.0016, Test acc: 0.6488,
+Epoch 5/10: Train loss: 0.8851, Train acc: 0.6851, Test loss: 0.8743, Test acc: 0.6912,
+Epoch 6/10: Train loss: 0.8051, Train acc: 0.7146, Test loss: 0.8463, Test acc: 0.7043,
+Epoch 7/10: Train loss: 0.7372, Train acc: 0.7379, Test loss: 0.8704, Test acc: 0.6971,
+Epoch 8/10: Train loss: 0.6773, Train acc: 0.7612, Test loss: 0.8850, Test acc: 0.6979,
+Epoch 9/10: Train loss: 0.6264, Train acc: 0.7753, Test loss: 0.8223, Test acc: 0.7254,
+Epoch 10/10: Train loss: 0.5780, Train acc: 0.7936, Test loss: 0.8761, Test acc: 0.7141,
+Mixed Kernel (1x1 + 3x3) trained in 115.14 seconds
+Final Test Accuracy: [0.4997, 0.576, 0.6215, 0.6488, 0.6912, 0.7043, 0.6971, 0.6979, 0.7254, 0.7141]%
+
+
+Summary Table:
+| Model Name               |   Training Time (sec) | Final Test Accuracy (Average)  |
+|--------------------------+-----------------------+--------------------------------|
+| 3x3 Kernel               |                111.44 | 0.73323  						|
+| 5x5 Kernel               |                115.83 | 0.71573					    |
+| 7x7 Kernel               |                116.38 | 0.63519  						|
+| Mixed Kernel (1x1 + 3x3) |                115.14 | 0.65761					    |
+
+Receptive Fields:
+3x3 Kernel: 7x7
+5x5 Kernel: 13x13
+7x7 Kernel: 19x19
+Mixed Kernel (1x1 + 3x3): 7x7

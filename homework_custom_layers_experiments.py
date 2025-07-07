@@ -28,10 +28,8 @@ class CustomConv2d(nn.Module):
         self.noise_stddev = noise_stddev
 
     def forward(self, x):
-        # Сворачиваем обычное изображение
-        x = self.conv(x)
-        # Добавляем гауссов шум
-        noise = torch.randn_like(x) * self.noise_stddev
+        x = self.conv(x) # Сворачиваем обычное изображение
+        noise = torch.randn_like(x) * self.noise_stddev # Добавляем гауссов шум
         noisy_output = x + noise
         return noisy_output
 
@@ -103,31 +101,29 @@ class CustomCNN(nn.Module):
         return x
 
 if __name__ == "1__main__":
-    # Проверка кастомного свёрточного слоя
+    # Базовая проверка кастомного свёрточного слоя
     custom_conv = CustomConv2d(3, 64, kernel_size=3, padding=1)
     input_tensor = torch.randn(1, 3, 32, 32)
     output = custom_conv(input_tensor)
     print("Custom Conv:", output.shape)
 
-    # Проверка механизма Attention
+    # Базовая проверка механизма Attention
     spatial_attn = SpatialAttention()
     output_attention = spatial_attn(input_tensor)
     print("Spatial Attention:", output_attention.shape)
 
-    # Проверка кастомной функции активации
+    # Базовая проверка кастомной функции активации
     pelu_activation = PELU()
     activated_tensor = pelu_activation(input_tensor)
     print("PELU Activated Tensor:", activated_tensor.shape)
 
-    # Проверка гибридного пулинга
+    # Базовая проверка гибридного пулинга
     hybrid_pool = HybridPooling()
     pooled_tensor = hybrid_pool(input_tensor)
     print("Hybrid Pooling:", pooled_tensor.shape)
 
-    # Получаем загрузчики данных
     train_loader, test_loader = get_cifar_dataloaders(batch_size=64)
 
-    # Тестируем обе модели
     custom_model = CustomCNN()
     standard_model = CIFARCNN()
 
@@ -235,7 +231,6 @@ class BaselineResNet(nn.Module):
         self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
 
-        # Прямая инициализация слоев
         self.layer1 = nn.Sequential(
             block_type(64, 64, stride=1),
             block_type(64, 64, stride=1)
@@ -284,16 +279,14 @@ class BottleneckResNet(nn.Module):
         self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
 
-        # Первым делом настраиваем первый блок с downsampling
         self.layer1 = nn.Sequential(
             block_type(64, 64, stride=1, downsample=nn.Sequential(
                 nn.Conv2d(64, 64 * block_type.expansion, kernel_size=1, stride=1, bias=False),
                 nn.BatchNorm2d(64 * block_type.expansion)
-            )),  # Обратите внимание на расширение каналов
-            block_type(64 * block_type.expansion, 64, stride=1)  # Оставшиеся блоки совпадают по размерам
+            )),
+            block_type(64 * block_type.expansion, 64, stride=1)
         )
 
-        # Другие слои остаются теми же
         self.layer2 = nn.Sequential(
             block_type(64 * block_type.expansion, 128, stride=2, downsample=nn.Sequential(
                 nn.Conv2d(64 * block_type.expansion, 128 * block_type.expansion, kernel_size=1, stride=2, bias=False),
@@ -340,7 +333,6 @@ class WideResNet(nn.Module):
         self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
 
-        # Инициализируем слои с downsample для корректировки каналов
         self.layer1 = nn.Sequential(
             block_type(64, 64, stride=1, widening_factor=widening_factor, downsample=nn.Sequential(
                 nn.Conv2d(64, 64 * widening_factor, kernel_size=1, stride=1, bias=False),
@@ -388,15 +380,12 @@ class WideResNet(nn.Module):
         return x
 
 if __name__ == "__main__":
-    # Получаем загрузчики данных
     train_loader, test_loader = get_cifar_dataloaders(batch_size=64)
 
-    # Training the models
     base_model = BaselineResNet()
     bottle_model = BottleneckResNet()
     wide_model = WideResNet(widening_factor=2)
 
-    # Выводы
     print("Параметры:")
     print(f'- BaselineResNet: {count_parameters(base_model):,}')
     print(f'- BottleneckResNet: {count_parameters(bottle_model):,}')

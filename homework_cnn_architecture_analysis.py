@@ -93,20 +93,19 @@ class CIFARCNNCombined(nn.Module):
         x = self.fc2(x)
         return x
 
-# Calculate Receptive Field manually
 def calculate_receptive_field(conv_layers):
+    """Подсчет количества рецептивных полей"""
     rf = 1  # Initial receptive field
     stride = 1
     for layer in conv_layers:
         kernel_size = layer.kernel_size[0]
-        padding = layer.padding[0]
         dilation = layer.dilation[0]
         rf = rf + ((kernel_size - 1) * dilation)
         stride *= layer.stride[0]
     return rf
 
-# Get activations visualization
 def show_first_layer_activations(model, sample_images):
+    """Визуализация активации первого слоя"""
     first_conv_layer = list(model.modules())[1]  # Assuming it's the first Conv2D layer
     act_fn = lambda x: F.relu(first_conv_layer(x)).detach().cpu().numpy()[0][0]  # Take first feature map
     activations = [act_fn(img.unsqueeze(0)) for img in sample_images]
@@ -118,10 +117,8 @@ def show_first_layer_activations(model, sample_images):
     plt.show()
 
 if __name__ == "1__main__":
-    # Получаем загрузчики данных
     train_loader, test_loader = get_cifar_dataloaders(batch_size=64)
 
-    # Definition of different kernels
     models = {
         '3x3 Kernel': CIFARCNN(num_classes=10),
         '5x5 Kernel': CIFARCNNKernel5x5(num_classes=10),
@@ -129,9 +126,8 @@ if __name__ == "1__main__":
         'Mixed Kernel (1x1 + 3x3)': CIFARCNNCombined(num_classes=10)
     }
 
-    sample_images = next(iter(test_loader))[0][:4].to(device)  # Sample some images for visualisation
+    sample_images = next(iter(test_loader))[0][:4].to(device)  # 4 изображения для визуализации активации
 
-    # Run experiments
     results = {}
     for name, model in models.items():
         print(f'Training {name}...')
@@ -143,13 +139,13 @@ if __name__ == "1__main__":
         print(f'Final Test Accuracy: {results[name]['test_accs']}%\n')
         show_first_layer_activations(model, sample_images)
 
-    # Summary table of training results
+    # Таблица результатов обучения
     table_data = [[name, round(results[name]['time'], 2), results[name]['test_accs']] for name in models.keys()]
     headers = ['Model Name', 'Training Time (sec)', 'Final Test Accuracy']
     print('\nSummary Table:')
     print(tabulate(table_data, headers=headers, tablefmt='orgtbl'))
 
-    # Calculating and comparing receptive fields
+    # Вычисление рецептивных полей
     receptive_fields = {}
     for name, model in models.items():
         conv_layers = [layer for layer in model.modules() if isinstance(layer, nn.Conv2d)]
@@ -159,24 +155,23 @@ if __name__ == "1__main__":
     for name, rf in receptive_fields.items():
         print(f"{name}: {rf}x{rf}")
 
-    # Visualisations
-    for name, result in results.items():
-        plt.figure(figsize=(10, 5))
-        plt.subplot(1, 2, 1)
-        plt.plot(result['train_losses'], label=name + ' Train Loss')
-        plt.title('Training Loss')
-        plt.xlabel('Epochs')
-        plt.ylabel('Loss')
-        plt.legend()
-
-        plt.subplot(1, 2, 2)
-        plt.plot(result['train_accs'], label=name + ' Train Accuracy')
-        plt.title('Training Accuracy')
-        plt.xlabel('Epochs')
-        plt.ylabel('Accuracy')
-        plt.legend()
-
-        plt.show()
+    # for name, result in results.items():
+    #     plt.figure(figsize=(10, 5))
+    #     plt.subplot(1, 2, 1)
+    #     plt.plot(result['train_losses'], label=name + ' Train Loss')
+    #     plt.title('Training Loss')
+    #     plt.xlabel('Epochs')
+    #     plt.ylabel('Loss')
+    #     plt.legend()
+    #
+    #     plt.subplot(1, 2, 2)
+    #     plt.plot(result['train_accs'], label=name + ' Train Accuracy')
+    #     plt.title('Training Accuracy')
+    #     plt.xlabel('Epochs')
+    #     plt.ylabel('Accuracy')
+    #     plt.legend()
+    #
+    #     plt.show()
 
 ### 2.2 Влияние глубины CNN (15 баллов)
 # Исследуйте влияние глубины CNN:
@@ -320,18 +315,25 @@ def check_gradients(model):
     return gradients
 
 def visualize_feature_maps(model, input_image):
-    """ Метод для визуализации активаций всех свёрточных слоёв для одного изображения. :param model: Объект модели CNN :param input_image: Одно изображение из датасета """
-    activations = []  # Список для хранения активаций
+    """
+    Метод для визуализации активаций всех свёрточных слоёв для одного изображения.
+    :param model: Объект модели CNN
+    :param input_image: Одно изображение из датасета
+    """
+    activations = []
     handle_inputs = input_image.unsqueeze(0).to(device)  # Добавляем первую размерность (batch-size)
 
-    # Перебираем все модули модели
     for module in model.modules():
         if isinstance(module, nn.Conv2d):
-            # Выполняем форвард пропагацию до текущего свёрточного слоя
-            handle_inputs = module(handle_inputs)
-            activations.append(handle_inputs.detach().cpu().numpy()[0])  # Сохраняем активацию
+            # Берём копию входных данных, чтобы не испортить оригинал
+            temp_inputs = handle_inputs.clone()
+            try:
+                handle_inputs = module(temp_inputs)
+                activations.append(handle_inputs.detach().cpu().numpy()[0])  # Сохраняем активацию
+            except Exception as e:
+                print(f"Error applying module: {e}")
+                break
 
-    # Отрисовка полученных активаций
     num_layers = len(activations)
     rows = int(np.ceil(np.sqrt(num_layers)))  # Распределяем равномерно по строкам и столбцам
     cols = int(np.ceil(num_layers / rows))
@@ -346,10 +348,8 @@ def visualize_feature_maps(model, input_image):
     plt.show()
 
 if __name__ == "__main__":
-    # Получаем загрузчики данных
     train_loader, test_loader = get_cifar_dataloaders(batch_size=64)
 
-    # Define our dictionary of models
     models = {
         'Shallow CNN (2 conv layers)': ShallowCNN(num_classes=10),
         'Medium CNN (4 conv layers)': MediumCNN(num_classes=10),
@@ -357,7 +357,6 @@ if __name__ == "__main__":
         'ResNet-like CNN': ResNetCNN(num_classes=10)
     }
 
-    # Results collection
     results = {}
     for name, model in models.items():
         print(f'\nTraining {name}...')
@@ -366,7 +365,7 @@ if __name__ == "__main__":
         end_time = time.time()
         results[name]['time'] = end_time - start_time
 
-    # Printing final results
+    # Таблица результатов
     final_results = [['Model', 'Training Time (sec)', 'Final Test Accuracy']]
     for name, res in results.items():
         final_results.append([name, round(res['time'], 2), res['test_accs']])
@@ -375,12 +374,11 @@ if __name__ == "__main__":
     print(
         tabulate(final_results, headers=['Model', 'Training Time (seconds)', 'Final Test Accuracy'], tablefmt='pretty'))
 
-    # Collect gradients
+    # График градиентов
     gradients = {}
     for name, model in models.items():
         gradients[name] = check_gradients(model)
 
-    # Histogram of gradients
     plt.figure(figsize=(10, 5))
     for name, g_list in gradients.items():
         plt.hist(g_list, bins=50, alpha=0.5, label=name)
@@ -390,7 +388,7 @@ if __name__ == "__main__":
     plt.legend()
     plt.show()
 
-    # Visualize feature maps for each model
+    # Feature maps
     random_sample = next(iter(test_loader))[0][0].to(device)
     for name, model in models.items():
         print(f'\nVisualizing feature maps for {name}:')

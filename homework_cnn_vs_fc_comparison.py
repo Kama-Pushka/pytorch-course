@@ -12,8 +12,6 @@ from lessons.lesson4_utils import plot_training_history, count_parameters
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}')
 
-# TODO скорее всего не совсем корректное измерение времени
-
 ### 1.1 Сравнение на MNIST (20 баллов)
 # Сравните производительность на MNIST:
 # - Полносвязная сеть (3-4 слоя)
@@ -63,8 +61,7 @@ def compare_models(fc_history, simple_cnn_history, cnn_history):
     plt.show()
 
 if __name__ == "1__main__":
-    # Конфигурация полносвязной модели
-    config = {
+    config = { # Конфигурация полносвязной модели
         'input_size': 784,
         'num_classes': 10,
         'layers': [
@@ -77,7 +74,6 @@ if __name__ == "1__main__":
         ]
     }
 
-    # Получаем загрузчики данных
     train_loader, test_loader = get_mnist_dataloaders(batch_size=64)
 
     # Полносвязная модель (3 слоя)
@@ -101,7 +97,7 @@ if __name__ == "1__main__":
     end_residual = time.time()
     residual_inference_time = measure_inference_time(residual_cnn, test_loader, device)
 
-    # Анализируем количество параметров
+    # Кол-во параметров
     fc_params = count_parameters(fc_model)
     simple_cnn_params = count_parameters(simple_cnn)
     residual_cnn_params = count_parameters(residual_cnn)
@@ -113,7 +109,6 @@ if __name__ == "1__main__":
         'CNN with Residual': end_residual - start_residual
     }
 
-    # Выводы
     print("Параметры:")
     print(f'- FCN: {fc_params:,}')
     print(f'- Simple CNN: {simple_cnn_params:,}')
@@ -128,7 +123,6 @@ if __name__ == "1__main__":
     print(f'- Simple CNN: {simple_inference_time:.4f} сек.')
     print(f'- CNN with Residual: {residual_inference_time:.4f} сек.')
 
-    # Сравниваем модели графически
     compare_models(fc_history, simple_history, residual_history)
 
 ### 1.2 Сравнение на CIFAR-10 (20 баллов)
@@ -266,6 +260,7 @@ def visualize_gradient_flow(model):
         if param[1].grad is not None:
             grad_mag = param[1].grad.norm().item()
             grad_mags.append(grad_mag)
+            # print(f"{param[0]}: {param[1].size()}")
     plt.figure(figsize=(10, 5))
     plt.bar(np.arange(len(grad_mags)), grad_mags)
     plt.title('Gradient Flow Analysis')
@@ -276,8 +271,8 @@ def visualize_gradient_flow(model):
 if __name__ == "__main__":
     # Конфигурация полносвязной модели
     config = {
-        'input_size': 3072,  # Размерность ввода (32x32x3)
-        'num_classes': 10,  # Число классов (10 категорий)
+        'input_size': 3072,  # 32x32x3
+        'num_classes': 10,  # 10 категорий
         'layers': [
             {'type': 'linear', 'size': 2048},  # Первый слой
             {'type': 'relu'},
@@ -301,12 +296,11 @@ if __name__ == "__main__":
         ],
     }
 
-    # Получаем загрузчики данных
     train_loader, test_loader = get_cifar_dataloaders(batch_size=64)
 
     # Полносвязная модель (Глубокая)
     fc_model = FCN(**config).to(device)
-    start_fc = time.time() # TODO !!
+    start_fc = time.time()
     fc_history = train_model(fc_model, train_loader, test_loader, epochs=10, lr=0001., device=str(device))
     end_fc = time.time()
 
@@ -322,7 +316,6 @@ if __name__ == "__main__":
     residual_history = train_model(cnn_with_reg_and_residual, train_loader, test_loader, epochs=10, lr=0.001, device=str(device))
     end_residual = time.time()
 
-    # Сравниваем модели графически
     compare_models(fc_history, simple_history, residual_history)
 
     conf_mat_fcn = compute_confusion_matrix(fc_model, test_loader)
@@ -336,23 +329,20 @@ if __name__ == "__main__":
 
     ###
 
-    # Анализируем количество параметров
     fc_params = count_parameters(fc_model)
     simple_cnn_params = count_parameters(cnn_with_residual)
     residual_cnn_params = count_parameters(cnn_with_reg_and_residual)
 
-    # Время обучения
     training_times = {
         'FCN': end_fc - start_fc,
-        'Simple CNN': end_simple - start_simple,
-        'CNN with Residual': end_residual - start_residual
+        'CNN with Residual': end_simple - start_simple,
+        'CNN with Reg + Residual': end_residual - start_residual
     }
 
-    # Выводы
     print("Параметры:")
     print(f'- FCN: {fc_params:,}')
-    print(f'- Simple CNN: {simple_cnn_params:,}')
-    print(f'- CNN with Residual: {residual_cnn_params:,}')
+    print(f'- CNN with Residual: {simple_cnn_params:,}')
+    print(f'- CNN with Reg + Residual: {residual_cnn_params:,}')
 
     print("\nВремя обучения:")
     for k, v in training_times.items():

@@ -1,0 +1,50 @@
+### Полносвязная модель (3 слоя)
+Epoch 1/10: Train loss: 0.2587, Train acc: 0.9221, Test loss: 0.1129, Test acc: 0.9647,
+Epoch 2/10: Train loss: 0.0960, Train acc: 0.9707, Test loss: 0.0818, Test acc: 0.9753,
+Epoch 3/10: Train loss: 0.0623, Train acc: 0.9802, Test loss: 0.0772, Test acc: 0.9762,
+Epoch 4/10: Train loss: 0.0456, Train acc: 0.9858, Test loss: 0.0713, Test acc: 0.9797,
+Epoch 5/10: Train loss: 0.0390, Train acc: 0.9875, Test loss: 0.0783, Test acc: 0.9779,
+Epoch 6/10: Train loss: 0.0307, Train acc: 0.9900, Test loss: 0.0805, Test acc: 0.9777,
+Epoch 7/10: Train loss: 0.0247, Train acc: 0.9923, Test loss: 0.0657, Test acc: 0.9828,
+Epoch 8/10: Train loss: 0.0236, Train acc: 0.9921, Test loss: 0.0867, Test acc: 0.9774,
+Epoch 9/10: Train loss: 0.0194, Train acc: 0.9938, Test loss: 0.0818, Test acc: 0.9798,
+Epoch 10/10: Train loss: 0.0181, Train acc: 0.9942, Test loss: 0.0793, Test acc: 0.9812,
+
+### Простая CNN (2 conv слоя)
+Epoch 1/10: Train loss: 0.2136, Train acc: 0.9334, Test loss: 0.0496, Test acc: 0.9833,
+Epoch 2/10: Train loss: 0.0657, Train acc: 0.9805, Test loss: 0.0362, Test acc: 0.9878,
+Epoch 3/10: Train loss: 0.0464, Train acc: 0.9854, Test loss: 0.0386, Test acc: 0.9867,
+Epoch 4/10: Train loss: 0.0376, Train acc: 0.9881, Test loss: 0.0286, Test acc: 0.9902,
+Epoch 5/10: Train loss: 0.0293, Train acc: 0.9906, Test loss: 0.0243, Test acc: 0.9917,
+Epoch 6/10: Train loss: 0.0271, Train acc: 0.9912, Test loss: 0.0272, Test acc: 0.9906,
+Epoch 7/10: Train loss: 0.0200, Train acc: 0.9938, Test loss: 0.0269, Test acc: 0.9913,
+Epoch 8/10: Train loss: 0.0182, Train acc: 0.9940, Test loss: 0.0276, Test acc: 0.9920,
+Epoch 9/10: Train loss: 0.0170, Train acc: 0.9944, Test loss: 0.0268, Test acc: 0.9919,
+Epoch 10/10: Train loss: 0.0149, Train acc: 0.9951, Test loss: 0.0240, Test acc: 0.9926,
+
+### CNN с Residual Block
+Epoch 1/10: Train loss: 0.1067, Train acc: 0.9689, Test loss: 0.0407, Test acc: 0.9873,
+Epoch 2/10: Train loss: 0.0385, Train acc: 0.9882, Test loss: 0.0289, Test acc: 0.9907,
+Epoch 3/10: Train loss: 0.0305, Train acc: 0.9901, Test loss: 0.0309, Test acc: 0.9906,
+Epoch 4/10: Train loss: 0.0263, Train acc: 0.9916, Test loss: 0.0258, Test acc: 0.9916,
+Epoch 5/10: Train loss: 0.0219, Train acc: 0.9935, Test loss: 0.0172, Test acc: 0.9939,
+Epoch 6/10: Train loss: 0.0192, Train acc: 0.9938, Test loss: 0.0214, Test acc: 0.9928,
+Epoch 7/10: Train loss: 0.0169, Train acc: 0.9945, Test loss: 0.0252, Test acc: 0.9917,
+Epoch 8/10: Train loss: 0.0157, Train acc: 0.9949, Test loss: 0.0169, Test acc: 0.9943,
+Epoch 9/10: Train loss: 0.0140, Train acc: 0.9955, Test loss: 0.0209, Test acc: 0.9932,
+Epoch 10/10: Train loss: 0.0115, Train acc: 0.9963, Test loss: 0.0182, Test acc: 0.9949,
+
+Параметры:
+- FCN: 567,434
+- Simple CNN: 421,642
+- CNN with Residual: 160,906
+
+Время обучения:
+- FCN: 75.76 сек.
+- Simple CNN: 88.00 сек.
+- CNN with Residual: 88.12 сек.
+
+Среднее время инференса на одну партию:
+- FCN: 0.0002 сек.
+- Simple CNN: 0.0002 сек.
+- CNN with Residual: 0.0005 сек.
