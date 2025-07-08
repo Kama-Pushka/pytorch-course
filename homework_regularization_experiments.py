@@ -3,6 +3,8 @@ import torch.nn.functional as F
 import torch.optim as optim
 import matplotlib.pyplot as plt
 import seaborn as sns
+from torch.nn import BatchNorm1d, Dropout
+
 from utils.lesson3_datasets import get_mnist_dataloaders
 from utils.lesson3_models import FCN
 from utils.lesson3_trainer import train_model
@@ -105,7 +107,7 @@ if __name__ == "1__main__":
 # - Анализ влияния на разные слои сети
 
 class AdaptiveDropout(torch.nn.Module):
-    def __init__(self, initial_rate=0.5, min_rate=0.1, steps=1000):
+    def __init__(self, initial_rate=0.5, min_rate=0.1, steps=10000):
         super().__init__()
         self.rate = initial_rate
         self.min_rate = min_rate
@@ -118,7 +120,7 @@ class AdaptiveDropout(torch.nn.Module):
         return F.dropout(x, p=current_rate, training=self.training)
 
 class AdaptiveBatchNorm(torch.nn.BatchNorm1d):
-    def __init__(self, num_features, initial_momentum=0.1, final_momentum=0.9, steps=1000):
+    def __init__(self, num_features, initial_momentum=0.1, final_momentum=0.9, steps=10000):
         super().__init__(num_features=num_features, momentum=initial_momentum)
         self.initial_momentum = initial_momentum
         self.final_momentum = final_momentum
@@ -145,9 +147,9 @@ class RegularizedFCN(FCN):
             elif layer_spec["type"] == "relu":
                 return torch.nn.ReLU()
             elif layer_spec["type"] == "dropout":
-                return AdaptiveDropout(initial_rate=layer_spec["rate"])
+                return AdaptiveDropout(initial_rate=layer_spec["rate"]) # Dropout(p=layer_spec["rate"])
             elif layer_spec["type"] == "batch_norm":
-                return AdaptiveBatchNorm(layer_spec["features"])
+                return AdaptiveBatchNorm(layer_spec["features"]) # BatchNorm1d(layer_spec["features"])
         else:
             raise ValueError(f"Unknown layer specification: {layer_spec}")
 
@@ -174,22 +176,24 @@ def adaptive_regularization():
     optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=0.001)
 
     history = train_model(model, train_loader, test_loader, epochs=5, device=str(device), optimizer=optimizer)
-
-    print(f"Final Test Accuracy: {max(history['test_accs']):.4f}%")
-
     plot_training_history(history)
 
-    # Распределение весов модели
-    weights = []
-    for p in model.parameters():
-        if p.dim() > 1:  # Выбираем только веса
-            weights.extend(p.detach().cpu().numpy().flatten())
+    linear_layers = [l for l in model.layers if isinstance(l, torch.nn.Linear)]
+    layers_weights_distribution(linear_layers)
 
-    adaptive_regularization_plot(weights)
+# Графики плотностей весов для каждого линейного слоя
+def layers_weights_distribution(linear_layers):
+    num_linear_layers = len(linear_layers)
+    plt.figure(figsize=(15, 5 * num_linear_layers))
+    for i, lin_layer in enumerate(linear_layers):
+        weights = lin_layer.weight.detach().cpu().numpy().flatten()
+        plt.subplot(num_linear_layers, 1, i + 1)
+        sns.kdeplot(weights, fill=True, color="skyblue")
+        plt.title(f"Distribution of Weights in Layer {i + 1}")
+        plt.xlabel("Weight Values")
+        plt.ylabel("Density")
 
-def adaptive_regularization_plot(weights):
-    sns.histplot(weights, bins=50, kde=True)
-    plt.title("Distribution of Weights after Training")
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":
