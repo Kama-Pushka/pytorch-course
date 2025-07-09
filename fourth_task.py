@@ -85,6 +85,7 @@ output_dirs = ["results_light", "results_medium", "results_heavy"]
 for output_dir in output_dirs:
     os.makedirs(output_dir, exist_ok=True)
 
+# Сохранение результатов
 for root, dirs, files in os.walk(images_dir):
     for filename in tqdm(files):
         if filename.endswith('.jpg') or filename.endswith('.png'):

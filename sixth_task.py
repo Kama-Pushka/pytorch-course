@@ -2,10 +2,13 @@ import torch
 import torchvision.models as models
 from torchvision import transforms
 from torch.utils.data import DataLoader
+import matplotlib.pyplot as plt
+
 from lessons.lesson5_datasets import CustomImageDataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+# Трансформации для изображений
 transform = transforms.Compose([
     transforms.Resize((224, 224)),  # Размер, подходящий для ResNet18
     transforms.ToTensor(),
@@ -28,7 +31,6 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)
 criterion = torch.nn.CrossEntropyLoss()
 
 history = {'train_loss': [], 'val_loss': [], 'val_accuracy': []}
-
 epochs = 15
 
 for epoch in range(epochs):
@@ -66,8 +68,7 @@ for epoch in range(epochs):
 
     print(f'Epoch {epoch + 1}/{epochs}, Train loss: {train_loss:.4f}, Test loss: {test_loss:.4f}, Test accuracy: {test_accuracy:.4f}')
 
-import matplotlib.pyplot as plt
-
+# Визуализация истории обучения
 plt.figure(figsize=(12, 5))
 
 plt.subplot(1, 2, 1)

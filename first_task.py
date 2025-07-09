@@ -14,6 +14,7 @@ transformations = {
     'grayscale': T.RandomGrayscale(p=1),
 }
 
+# Берем первое изображение из каждой папки
 class_folders = sorted(os.listdir(train_dir))[:5]
 image_paths = []
 for folder in class_folders:
@@ -21,13 +22,7 @@ for folder in class_folders:
     first_image = os.path.join(train_dir, folder, images_in_folder[0])
     image_paths.append(first_image)
 
-
-def show_image(image):
-    """Отображаем изображение."""
-    plt.imshow(image)
-    plt.axis('off')
-
-
+# Применяем аугментации к изображениям
 for img_path in image_paths:
     original_img = Image.open(img_path).convert("RGB")
 
@@ -39,15 +34,18 @@ for img_path in image_paths:
         else:
             augmented_img = original_img.copy()
 
+        # Аугментированное изображение
         axes[0][i].imshow(augmented_img)
         axes[0][i].set_title(name.capitalize())
         axes[0][i].axis('off')
 
+        # Изображение со всеми аугментациями (для наглядности сравнения будет под каждой аугментацией)
         transformed_img = original_img
         for t in transformations.values():
             if t is not None:
                 transformed_img = t(transformed_img)
 
+        # Результат после последовательного применения всех эффектов
         axes[1][i].imshow(transformed_img)
         axes[1][i].set_title(f'Sequential {name}')
         axes[1][i].axis('off')

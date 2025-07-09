@@ -11,9 +11,8 @@ from lessons.lesson5_extra_augs import *
 class CustomAugmentation:
     def apply_random_blur(self, img, max_radius=5, p=0.5):
         """ Случайное гауссово размытие.
-        Параметры:
-        - max_radius: максимальный радиус размытия (по умолчанию 5)
-        - p: вероятность применения размытия (по умолчанию 0.5)
+        :param max_radius: максимальный радиус размытия (по умолчанию 5)
+        :param p: вероятность применения размытия (по умолчанию 0.5)
         """
         if random.random() < p:
             blur_radius = random.uniform(0, max_radius)
@@ -21,7 +20,10 @@ class CustomAugmentation:
         return img
 
     def apply_perspective_transform(self, img, distortion_scale=0.5, p=0.5):
-        """ Перспективное преобразование. Параметры: - distortion_scale: масштаб искажения перспективы (от 0 до 1, где 0 — отсутствие искажения, 1 — максимально возможная деформация) - p: вероятность применения преобразования (по умолчанию 0.5) """
+        """ Перспективное преобразование.
+        :param distortion_scale: масштаб искажения перспективы (от 0 до 1)
+        :param - p: вероятность применения преобразования (по умолчанию 0.5)
+        """
         if random.random() < p:
             width, height = img.size
 
@@ -45,10 +47,9 @@ class CustomAugmentation:
 
     def adjust_brightness_and_contrast(self, img, min_brightness=0.5, max_brightness=1.5, min_contrast=0.5, max_contrast=1.5, p=0.5):
         """ Коррекция яркости и контрастности.
-        Параметры:
-        - min_brightness, max_brightness: минимальные/максимальные значения яркости
-        - min_contrast, max_contrast: минимальные/максимальные значения контрастности
-        - p: вероятность применения преобразования (по умолчанию 0.5) """
+        :param min_brightness, max_brightness: минимальные/максимальные значения яркости
+        :param min_contrast, max_contrast: минимальные/максимальные значения контрастности
+        :param p: вероятность применения преобразования (по умолчанию 0.5) """
         if random.random() < p:
             brightness_factor = random.uniform(min_brightness, max_brightness)
             contrast_factor = random.uniform(min_contrast, max_contrast)
@@ -62,13 +63,14 @@ class CustomAugmentation:
 train_dir = 'data/train'
 custom_augs = CustomAugmentation()
 
+# Сбор первых изображений из каждого класса
 class_folders = sorted(os.listdir(train_dir))[:5]
 image_paths = [os.path.join(train_dir, folder, os.listdir(os.path.join(train_dir, folder))[0]) for folder in
                class_folders]
 
 num_classes = len(class_folders)
 
-
+# Добавление изображение на plot
 def show_image(ax, img, title=None):
     if not isinstance(img, torch.Tensor):
         to_tensor = T.ToTensor()
@@ -89,6 +91,7 @@ for idx, path in enumerate(image_paths):
 
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 6))
 
+    # Кастомные преобразования
     aug_img_1 = custom_augs.apply_random_blur(img, max_radius=3, p=1.0)
     aug_img_2 = custom_augs.apply_perspective_transform(img, distortion_scale=0.3, p=1.0)
     aug_img_3 = custom_augs.adjust_brightness_and_contrast(img, min_brightness=0.7, max_brightness=1.3,
@@ -97,6 +100,7 @@ for idx, path in enumerate(image_paths):
     show_image(axes[0][1], aug_img_2, 'Perspective Transform')
     show_image(axes[0][2], aug_img_3, 'Brightness & Contrast Adjust.')
 
+    # Преобразования из extra_augs.py
     noise_aug = T.Compose([
         T.ToTensor(),
         AddGaussianNoise(0., 0.2)

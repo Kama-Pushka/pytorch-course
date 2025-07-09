@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 base_dir = 'data/'
 
 
+# Сбор данных
 def collect_data(base_dir):
     datasets = ['train', 'test']
     data = {'dataset': [], 'class': [], 'height': [], 'width': []}
@@ -43,6 +44,7 @@ def collect_data(base_dir):
 if __name__ == "__main__":
     df = collect_data(base_dir)
 
+    # Статистика по размерам
     avg_height = df['height'].mean()
     avg_width = df['width'].mean()
     min_size = df[['height', 'width']].min().values
@@ -52,6 +54,7 @@ if __name__ == "__main__":
     print(f"Минимальный размер изображений: ({min_size[0]}, {min_size[1]}).")
     print(f"Максимальный размер изображений: ({max_size[0]}, {max_size[1]}).")
 
+    # Визуализация распределения размеров
     plt.figure(figsize=(12, 6))
     sns.histplot(df.query("dataset=='train'")['height'], bins=30, kde=True, color='blue', alpha=0.5,
                  label="Train Height")
@@ -65,6 +68,7 @@ if __name__ == "__main__":
     plt.legend()
     plt.show()
 
+    # Гистограмма по количеству изображений в классах
     grouped_df = df.groupby(['dataset', 'class']).size().reset_index(name='count')
 
     g = sns.FacetGrid(grouped_df, col="dataset", height=5, aspect=1.2)

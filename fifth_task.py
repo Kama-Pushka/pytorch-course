@@ -1,6 +1,7 @@
-import timeit
-
+import os
+import glob
 import pandas as pd
+import timeit
 import psutil
 import gc
 from PIL import Image
@@ -10,18 +11,21 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
+# Измерение времени выполнения
 def measure_time(func, args=(), num_runs=10):
     timer = timeit.Timer(lambda: func(*args))
     execution_times = timer.repeat(number=num_runs)
     return sum(execution_times) / len(execution_times)
 
 
+# Измерение расхода памяти
 def memory_usage_mb():
     process = psutil.Process()
     mem_info = process.memory_info()
     return mem_info.rss / (1024 * 1024)  # MB
 
 
+# Функция загрузки и преобразования изображения
 def load_and_augment_image(image_path, target_size):
     transform = T.Compose([
         T.Resize(target_size),
@@ -31,6 +35,7 @@ def load_and_augment_image(image_path, target_size):
 
     img = Image.open(image_path)
 
+    # Если изображение ч/б, конвертируем в RGB
     if img.mode != 'RGB':
         img = img.convert('RGB')
 
@@ -38,15 +43,10 @@ def load_and_augment_image(image_path, target_size):
     return tensor
 
 
-import os
-import glob
-
 images_dir = 'data/train/'
-
 all_images = glob.glob(os.path.join(images_dir, '*/*'))
 
 resolutions = [(64, 64), (128, 128), (224, 224), (512, 512)]
-
 results = {"resolution": [], "load_time": [], "memory_usage": []}
 
 for resolution in resolutions:
@@ -57,7 +57,7 @@ for resolution in resolutions:
     for image_path in all_images[:100]:  # Берём первые 100 изображений
         load_time = measure_time(load_and_augment_image, args=(image_path, resolution))
         total_load_time += load_time
-        gc.collect()  # Освобождаем память после каждой итерации
+        gc.collect()  # Освобождаем память
 
     results["resolution"].append(side_length) # side_length x side_length
     results["load_time"].append(total_load_time / 100)  # Среднее время загрузки
