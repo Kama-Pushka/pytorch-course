@@ -4,30 +4,26 @@ from pathlib import Path
 import torch
 from PIL import Image
 from torch.utils.data import Dataset, DataLoader
-from torchvision.transforms import Compose, Resize, ToTensor, Normalize
+from torchvision.models import EfficientNet_B3_Weights
 
 
 class CardiomegalyDataset(Dataset):
-    def __init__(self, data_dir: str, image_size: (int, int), recursive=True):
+    def __init__(self, data_dir: str, recursive=True):
         """
         Инициализирует набор данных кардиомегалии с возможностью рекурсивного поиска классов.
         :param data_dir: Основной путь к директории с изображениями ('train' or 'test')
-        :param image_size: Целевой размер изображения после преобразования (width, height)
         :param recursive: Рекурсивно искать классы в подпапках (default: True)
         """
-        self.image_size = image_size
-        self.transform = Compose([Resize(image_size), ToTensor()])
+        self.transform = EfficientNet_B3_Weights.IMAGENET1K_V1.transforms()
 
         # Найдем все папки 'true' и 'false'
         root_path = Path(data_dir)
-        if recursive:
-            # Рекурсивно ищем папки 'true' и 'false'
+        if recursive: # Рекурсивно ищем папки 'true' и 'false'
             true_folders = list(root_path.rglob("true"))
             false_folders = list(root_path.rglob("false"))
-        else:
-            # Если не рекурсивно, ограничимся первым уровнем вложенности
-            true_folders = list((root_path / "true").iterdir())
-            false_folders = list((root_path / "false").iterdir())
+        else: # Если не рекурсивно, ограничимся первым уровнем вложенности
+            true_folders = [Path(root_path / "true")]
+            false_folders = [Path(root_path / "false")]
 
         # Собираем полные пути к файлам и соответствующим меткам
         paths_and_labels = []
@@ -48,8 +44,7 @@ class CardiomegalyDataset(Dataset):
         path, label = self.paths_and_labels[idx]
         img = Image.open(path).convert('RGB')
         transformed_img = self.transform(img)
-        t = int(label)
-        target = torch.tensor(t)  # True/False превращаются в 1/0
+        target = torch.tensor(int(label))
         return transformed_img, target
 
 def get_cardiomegaly_dataloaders(
@@ -70,11 +65,10 @@ def get_cardiomegaly_dataloaders(
     :param recursive: Флаг, разрешающий рекурсивный поиск классов (по умолчанию включен)
     :return: Кортеж (train_loader, test_loader) """
 
-    # Инициализируем тренировочную и тестовую выборки с учётом рекурсии
-    train_dataset = CardiomegalyDataset(train_data_path, image_size=(224, 224), recursive=recursive)
-    test_dataset = CardiomegalyDataset(test_data_path, image_size=(224, 224), recursive=recursive)
+    train_dataset = CardiomegalyDataset(train_data_path, recursive=recursive)
+    test_dataset = CardiomegalyDataset(test_data_path, recursive=recursive)
 
-    # Создаем объект DataLoader для тренировок
+    # DataLoader для тренировок
     train_loader = DataLoader(
         dataset=train_dataset,
         batch_size=batch_size,
@@ -82,7 +76,7 @@ def get_cardiomegaly_dataloaders(
         num_workers=num_workers
     )
 
-    # Создаем объект DataLoader для тестов
+    # DataLoader для тестов
     test_loader = DataLoader(
         dataset=test_dataset,
         batch_size=batch_size,

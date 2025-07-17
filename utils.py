@@ -35,29 +35,25 @@ def visualize_first_batch(dataloader):
     # Получаем первый батч из dataloader
     images, labels = next(iter(dataloader))
 
-    # Определяем количество строк и столбцов исходя из размеров батча
     n_samples = len(images)
-    n_rows = int(np.ceil(np.sqrt(n_samples)))  # Округляем вверх квадратный корень
+    n_rows = int(np.ceil(np.sqrt(n_samples)))
     n_cols = int(np.ceil(n_samples / n_rows))
 
-    # Создаем график
     fig, axes = plt.subplots(nrows=n_rows, ncols=n_cols, figsize=(12, 12))
     axes = axes.flatten()  # Приводим двумерный массив осей к плоскому виду
 
     # Показываем каждую картинку из батча
     for i in range(n_samples):
-        # Преобразовываем изображение в подходящий формат
         image_np = images[i].numpy().transpose((1, 2, 0))  # CHW -> HWC
         image_np = np.clip(image_np, 0, 1)  # Корректировка диапазона пикселей
 
-        # Отрисовка изображения
         ax = axes[i]
         ax.imshow(image_np)
-        ax.set_title(f"Class: {'Positive' if labels[i].item() else 'Negative'}")  # Подпись
-        ax.axis('off')  # Скрываем оси
+        ax.set_title(f"Class: {'Positive' if labels[i].item() else 'Negative'}")
+        ax.axis('off')
 
-    # Оставшиеся пустые места (если batc_size не квадратичный)
-    for j in range(i+1, len(axes)):  # скрываем оставшиеся незадействованные ячейки
+    # скрываем оставшиеся незадействованные ячейки (если batch_size не квадратичный)
+    for j in range(i+1, len(axes)):
         axes[j].axis('off')
 
     plt.tight_layout()
@@ -68,7 +64,6 @@ def plot_training_validation_curves(metrics):
     """ Визуализирует кривые обучения и валидации.
     :param metrics: Словарь с историей обучения и валидации """
 
-    # Готовим DataFrames для графиков
     df_train = pd.DataFrame({"Epoch": range(1, len(metrics["train_loss"]) + 1),
                              "Type": ["Train"] * len(metrics["train_loss"]),
                              "Loss": metrics["train_loss"],
@@ -78,8 +73,6 @@ def plot_training_validation_curves(metrics):
                            "Type": ["Val"] * len(metrics["val_loss"]),
                            "Loss": metrics["val_loss"],
                            "Accuracy": metrics["val_acc"]})
-
-    # Объединяем данные
     df_combined = pd.concat([df_train, df_val]).reset_index(drop=True)
 
     # ГРАФИК ПОТЕРЬ
@@ -104,22 +97,21 @@ def plot_training_validation_curves(metrics):
 
 
 def compute_confusion_matrix(model, dataloader, device):
-    """ Рассчитывает и отображает матрицу путаницы для модели.
+    """ Рассчитывает и отображает confusion matrix для модели.
     :param model: PyTorch модель
     :param dataloader: DataLoader для тестирования
-    :param device: Устройство (GPU/CUDA)
-    :return: Матрица путаницы """
+    :param device: Устройство (GPU/CUDA)"""
     model.eval()
     all_targets = []
     all_predictions = []
 
-    with torch.no_grad():  # Отключение градиентного вычисления
+    with torch.no_grad():
         for inputs, labels in dataloader:
             inputs = inputs.to(device)
             labels = labels.to(device)
 
             outputs = model(inputs)
-            _, predictions = torch.max(outputs, 1)  # Получаем индекс наибольшего значения (класс)
+            _, predictions = torch.max(outputs, 1)
 
             all_targets.extend(labels.cpu().numpy())  # Метки
             all_predictions.extend(predictions.cpu().numpy())  # Предсказанные классы

@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from torch import optim
 from tqdm import tqdm
 
 from utils import save_model
@@ -7,17 +8,16 @@ from utils import save_model
 
 def run_epoch(model, data_loader, loss_fn, optimizer=None, device=None, is_test=False):
     """ Выполняет одну эпоху обучения или валидации.
-    :param model: Инстанс PyTorch модели
+    :param model: Модель PyTorch
     :param data_loader: DataLoader (для обучения или тестирования)
     :param loss_fn: Критерий потерь (например, BCELoss)
     :param optimizer: Оптимизатор (только для режима обучения)
     :param device: Устройство (CPU/GPU)
-    :param is_test: Флаг, определяющий режим (training vs testing)
+    :param is_test: Флаг, определяющий режим тестирования
     :return: Средняя потеря и точность за эпоху """
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Переключаемся между режимами обучения и тестирования
     if is_test:
         model.eval()
     else:
@@ -30,7 +30,7 @@ def run_epoch(model, data_loader, loss_fn, optimizer=None, device=None, is_test=
     with torch.set_grad_enabled(not is_test):
         progress_bar = tqdm(data_loader, leave=False)
         for inputs, labels in progress_bar:
-            inputs, labels = inputs.to(device), labels.long().to(device)
+            inputs, labels = inputs.to(device), labels.to(device)
 
             if not is_test:
                 optimizer.zero_grad()
@@ -42,7 +42,7 @@ def run_epoch(model, data_loader, loss_fn, optimizer=None, device=None, is_test=
                 loss.backward()
                 optimizer.step()
 
-            total_loss += loss.item() * inputs.size(0)
+            total_loss += loss.item() # * inputs.size(0)
             pred = outputs.argmax(dim=1)
             total_correct += (pred == labels).float().sum().item()
             total_samples += inputs.size(0)
@@ -67,11 +67,14 @@ def train_model(model, train_loader, test_loader, epochs=10, lr=0.001, device=No
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     if optimizer is None:
-        optimizer = torch.optim.Adamax(model.parameters(), lr=lr)
+        optimizer = torch.optim.Adamax(model.parameters(), lr=lr, weight_decay=0.005) # Adam
 
     model = model.to(device)
 
-    loss_fn = nn.CrossEntropyLoss() # CrossEntropyLoss
+    loss_fn = nn.CrossEntropyLoss()
+    lr_scheduler = optim.lr_scheduler.MultiStepLR(optimizer=optimizer,
+                                                  milestones=[int(epochs * 0.5), int(epochs * 0.75)], gamma=0.1,
+                                                  last_epoch=-1)
     metrics = {"train_loss": [], "train_acc": [], "val_loss": [], "val_acc": []}
 
     best_test_loss = float('inf')
@@ -91,6 +94,8 @@ def train_model(model, train_loader, test_loader, epochs=10, lr=0.001, device=No
         metrics["val_loss"].append(val_loss)
         metrics["val_acc"].append(val_acc)
         print(f"Validation Loss: {val_loss:.4f}, Validation Accuracy: {val_acc:.4f}\n")
+
+        lr_scheduler.step() # train_loss
 
         if val_loss < best_test_loss:
             best_test_loss = val_loss
