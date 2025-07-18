@@ -10,8 +10,8 @@ def run_epoch(model, data_loader, loss_fn, optimizer=None, device=None, is_test=
     """ Выполняет одну эпоху обучения или валидации.
     :param model: Модель PyTorch
     :param data_loader: DataLoader (для обучения или тестирования)
-    :param loss_fn: Критерий потерь (например, BCELoss)
-    :param optimizer: Оптимизатор (только для режима обучения)
+    :param loss_fn: Функция потерь
+    :param optimizer: Оптимизатор
     :param device: Устройство (CPU/GPU)
     :param is_test: Флаг, определяющий режим тестирования
     :return: Средняя потеря и точность за эпоху """
@@ -55,13 +55,13 @@ def run_epoch(model, data_loader, loss_fn, optimizer=None, device=None, is_test=
 
 def train_model(model, train_loader, test_loader, epochs=10, lr=0.001, device=None, optimizer=None):
     """ Управляет процессом обучения и периодической проверкой модели.
-    :param model: Инстанс PyTorch модели
+    :param model: Модель PyTorch
     :param train_loader: DataLoader для обучения
     :param test_loader: DataLoader для тестирования
     :param epochs: Количество эпох обучения
     :param lr: Скорость обучения
     :param device: Устройство (CPU/GPU)
-    :param optimizer: Пользовательский оптимизатор (опциональный)
+    :param optimizer: Оптимизатор (опциональный)
     :return: Словарь метрик обучения и тестирования """
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
